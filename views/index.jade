@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  h1= title
+  div#source
+  div#ner-dialog
+    p Selected Text: <span id='selected-text'></span>
+    ul#ner-menu
+      li
+        input(type='radio', name='nerchoice',value=1)
+        | Person
+      li
+        input(type='radio', name='nerchoice',value=2)
+        | Location
+      li
+        input(type='radio', name='nerchoice',value=3)
+        | Group
+      li
+        input(type='radio', name='nerchoice',value=0)
+        | None
+  ul#selected-ner-menu(style='display: none;')
+    li Person
+    li Location
+    li Group
+    li None

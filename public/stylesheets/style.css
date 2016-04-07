@@ -1,0 +1,44 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+h1 {
+  background: #2a333c;
+  color: white;
+  padding: 18px;
+  margin: 0;
+  
+}
+
+p {
+  margin: 10px;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.person {
+  background:#9900cc;
+}
+
+.location {
+  background:#cc6600;
+}
+
+.ne {
+  cursor: pointer;
+}
+
+#ner-menu {
+  list-style: none;
+}
+
+#selected-ner-menu {
+  width: 200px;
+}
+
+.group {
+  background:#660066;
+}
