@@ -156,7 +156,10 @@ $(function () {
   var selectionInfo;
   
   var onMouseUp = function onMouseUp(event) {
-    if($("#ner-dialog").is(":visible") || $("#selected-ner-menu").is(":visible") || $(event.target).hasClass("ne")) {
+    /*if($("#ner-dialog").is(":visible") || $("#selected-ner-menu").is(":visible") || $(event.target).hasClass("ne") || $("#open-dialog").is(":visible")) {
+      return;
+    }*/
+    if(!$(event.target).closest("#source").size()) {
       return;
     }
     var selected = window.getSelection();
@@ -313,6 +316,8 @@ $(function () {
     $("ul#filelist").html(liHtml);
   };
   
+  var curFilename;
+  
   // Setup Open dialog
   $("#open-dialog").dialog({
     autoOpen: false,
@@ -326,8 +331,8 @@ $(function () {
         var filename = $("ul#filelist li.active").html();
         $("ul#filelist li.active").removeClass("active");
         if(filename) {
-          filename = filename.replace(/\.txt$/, "");
-          onFileSelection(filename);
+          curFilename = filename.replace(/\.txt$/, "");
+          onFileSelection(curFilename);
         }
       }
     }, {
@@ -362,7 +367,7 @@ $(function () {
      $("#status").html("Saving");
      $("#source").html("");
     
-     $.post("/save", {name: "1", data: JSON.stringify(annotations)}).done(function() {
+     $.post("/save", {name: curFilename, data: JSON.stringify(annotations)}).done(function() {
        alert("Changes saved successfully");
        $("#status").html("");
      }).fail(function() {
