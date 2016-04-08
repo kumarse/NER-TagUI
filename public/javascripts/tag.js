@@ -384,7 +384,7 @@ $(function () {
       $.get("/data/ann/" + filename + ".json").done(function(annJson) {
         handleSourceLoad(fileData, annJson);
       }).fail(function() {
-        handleSourceLoad(fileData, []);
+        handleSourceLoad(fileData, "[]");
       });
       $("#save-btn").attr("disabled", false);
     });
