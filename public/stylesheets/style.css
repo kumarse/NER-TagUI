@@ -3,12 +3,67 @@ body {
   margin: 0;
 }
 
+/* Styles for various span types */
+
+
+.person {
+  background: rgba(13, 0, 204, 0.47);
+}
+
+.location {
+  background: rgba(204, 198, 0, 0.72);
+}
+
+.group {
+  background: rgba(250, 0, 0, 0.38);
+}
+
+.time {
+  background: rgba(11, 229, 18, 0.55);
+}
+
+.role {
+  background: rgba(255, 255, 0, 0.62);
+}
+
+.event {
+  background: rgba(5, 196, 196, 0.35);
+}
+
+/* styles end */
+
+.ne {
+  border: solid 1px black;
+  cursor: pointer;
+}
+
 h1 {
   background: #2a333c;
   color: white;
   padding: 18px;
   margin: 0;
-  
+}
+
+div#command {
+  background: gray;
+}
+
+#save-btn, #open-btn {
+  margin: 10px;
+  cursor: pointer;
+}
+
+ul#filelist {
+  list-style: none;
+}
+
+ul#filelist li:hover {
+  background: white;
+}
+
+ul#filelist li.active {
+  background: #2a333c;
+  color: white;
 }
 
 p {
@@ -19,18 +74,6 @@ a {
   color: #00B7FF;
 }
 
-.person {
-  background:#9900cc;
-}
-
-.location {
-  background:#cc6600;
-}
-
-.ne {
-  cursor: pointer;
-}
-
 #ner-menu {
   list-style: none;
 }
@@ -39,6 +82,8 @@ a {
   width: 200px;
 }
 
-.group {
-  background:#660066;
+
+span#status {
+  color: white;
+  font-size: 15px;
 }

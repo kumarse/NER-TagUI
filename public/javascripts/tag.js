@@ -166,6 +166,7 @@ $(function () {
       selectionInfo = getSelectionInfo(selected, event);
       if(selectionInfo) {
         $("#ner-dialog #selected-text").html(selectionInfo.token);
+        $("input[name='nerchoice']").prop("checked", false);
         $("#ner-dialog").dialog("open");
       }
     }
@@ -184,7 +185,7 @@ $(function () {
         $( this ).dialog( "close" );
         var selectedValue = $("[name=nerchoice]:checked").val();
         if(selectedValue) {
-          selectionInfo.cls = {"1": "person", "2": "location", "3": "group"}[selectedValue];
+          selectionInfo.cls = {"1": "person", "2": "location", "3": "group", "4": "time", "5": "role", "6": "event"}[selectedValue];
           onNerSelection(selectionInfo);
         }
       }
@@ -282,7 +283,7 @@ $(function () {
     // Setup document mouseup handler - here or global ?
   }
   
-  var handleSourceLoad = function handleSourceLoad(text, knownNamedEntities) {
+  var handleSourceLoad = function handleSourceLoad(text, annJson) {
     parasTokens = parseText(text);
     
     // Empty Source Tokens
@@ -292,21 +293,97 @@ $(function () {
       Array.prototype.push.apply(sourceTokens, pTokens);
     });
     
-    // Empty annotations
-    annotations = [];
+    // Set annotations
+    annotations = JSON.parse(annJson);
+    /*
     // Tag known named entities contained within this text
     knownNamedEntities.forEach(function(namedEntity) {      
       annotateInflections(namedEntity.token, namedEntity.cls);
     });
+    */
     
     generateHtml();
   };
   
-  // TODO: Modify this to fetch both the selected file and annotations info
-  // If annotations info is present, do not fetch known named entities from DB. Else fetch them
-  $.get("/data/1.txt", function(data) {
-    handleSourceLoad(data, [ ]);
+  var populateFilenames = function populateFilenames(filelist) {
+    var liHtml = "";
+    filelist.forEach(function(file) {
+      liHtml += "<li value='" + file + "'>" + file + "</li>";
+    });
+    $("ul#filelist").html(liHtml);
+  };
+  
+  // Setup Open dialog
+  $("#open-dialog").dialog({
+    autoOpen: false,
+    modal: true,
+    title: 'Choose file',
+    width: '800px',
+    buttons: [{
+      text: "Ok",
+      click: function() {
+        $( this ).dialog( "close" );
+        var filename = $("ul#filelist li.active").html();
+        $("ul#filelist li.active").removeClass("active");
+        if(filename) {
+          filename = filename.replace(/\.txt$/, "");
+          onFileSelection(filename);
+        }
+      }
+    }, {
+      text: "Cancel",
+      click: function() {
+        $( this ).dialog( "close" );
+      }
+    }]
   });
+  
+  
+  $("#open-btn").attr("disabled", true);
+  $("#save-btn").attr("disabled", true);
+  
+  $.get("/list", function(json) {
+    data = JSON.parse(json.data);
+    populateFilenames(data);
+    $("#open-btn").attr("disabled", false);
+  });
+  
+  $("#open-btn").on("click", function(event) {
+     $("#open-dialog").dialog("open");
+  });
+  
+  $("ul#filelist").on("click", "li", function(event) {
+    $("ul#filelist li.active").removeClass("active");
+    $(this).addClass("active");
+  });
+
+  $("#save-btn").on("click", function(event) {
+     $(this).attr("disabled", true);
+     $("#status").html("Saving");
+     $("#source").html("");
+    
+     $.post("/save", {name: "1", data: JSON.stringify(annotations)}).done(function() {
+       alert("Changes saved successfully");
+       $("#status").html("");
+     }).fail(function() {
+       alert("Couldn't save changes");
+       $("#status").html("");
+       $("#save-btn").attr("disabled", false);
+       generateHtml();
+     });
+  });
+  
+  
+  var onFileSelection = function onFileSelection(filename) {
+    var fileGet = $.get("/data/raw/" + filename + ".txt", function(fileData) {
+      $.get("/data/ann/" + filename + ".json").done(function(annJson) {
+        handleSourceLoad(fileData, annJson);
+      }).fail(function() {
+        handleSourceLoad(fileData, []);
+      });
+      $("#save-btn").attr("disabled", false);
+    });
+  }
 });
 
 

@@ -2,6 +2,12 @@ extends layout
 
 block content
   h1= title
+  div#command
+    input(type='button', id='open-btn', value='Open')
+    input(type='button', id='save-btn', value='Save')
+    span#status
+  div#open-dialog
+    ul#filelist
   div#source
   div#ner-dialog
     p Selected Text: <span id='selected-text'></span>
@@ -16,10 +22,22 @@ block content
         input(type='radio', name='nerchoice',value=3)
         | Group
       li
+        input(type='radio', name='nerchoice',value=4)
+        | Time
+      li
+        input(type='radio', name='nerchoice',value=5)
+        | Role
+      li
+        input(type='radio', name='nerchoice',value=6)
+        | Event
+      li
         input(type='radio', name='nerchoice',value=0)
         | None
   ul#selected-ner-menu(style='display: none;')
     li Person
     li Location
     li Group
+    li Time
+    li Role
+    li Event
     li None
