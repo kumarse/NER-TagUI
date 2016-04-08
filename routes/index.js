@@ -11,7 +11,7 @@ router.get('/list', function(req, res, next) {
 	var myJsonString = ""
 	fs.readdir('data/raw', function(err, items) {
 		myJsonString = JSON.stringify(items);
-		res.render('list', { data: JSON.parse(myJsonString) });	
+		res.json({data: myJsonString});	
 	});
   	
 });
