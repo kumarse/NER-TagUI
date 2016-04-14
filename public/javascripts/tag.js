@@ -188,7 +188,15 @@ $(function () {
         $( this ).dialog( "close" );
         var selectedValue = $("[name=nerchoice]:checked").val();
         if(selectedValue) {
-          selectionInfo.cls = {"1": "person", "2": "location", "3": "group", "4": "time", "5": "role", "6": "event"}[selectedValue];
+          selectionInfo.cls = {
+            "1": "person",
+            "2": "location",
+            "3": "group",
+            "4": "time",
+            "5": "role",
+            "6": "event",
+            "7": "quantity"
+          }[selectedValue];
           onNerSelection(selectionInfo);
         }
       }

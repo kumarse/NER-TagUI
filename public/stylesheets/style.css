@@ -30,6 +30,10 @@ body {
   background: rgba(5, 196, 196, 0.35);
 }
 
+.quantity {
+  background: rgba(0, 128, 0, 0.6);
+}
+
 /* styles end */
 
 .ne {
